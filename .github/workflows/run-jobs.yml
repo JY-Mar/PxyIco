@@ -45,6 +45,21 @@ jobs:
         run: |
           mkdir -p docs
           cp -r resources/* docs/
+      
+      - name: 🧠 Run grouping script in resources/
+        env:
+          OUTPUT_DIR: docs
+        run: python scriptsForPython/generate_images_json.py
+
+      - name: 🧱 Generate "index.html" from template
+        env:
+          OUTPUT_DIR: docs
+        run: |
+          # 确保输出目录存在
+          mkdir -p docs
+          # 读取模板，替换变量，输出到最终位置
+          # 注意：使用 envsubst 时，可以指定只替换特定的变量，防止干扰 HTML 里的其他 $ 符号
+          envsubst '$OUTPUT_DIR' < templates/index.html > docs/index.html
 
       - name: 📤 Upload artifact
         uses: actions/upload-pages-artifact@v3
