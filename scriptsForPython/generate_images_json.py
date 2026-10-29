@@ -4,6 +4,9 @@ import json
 # 图标目录名
 ICONS_DIR_NAME = "resources"
 
+# docs 根目录是否包含目录 ICONS_DIR_NAME
+CONTAIN_ICONS_DIR = False
+
 # 输出JSON文件名
 OUTPUT_JSON = "images.json"
 
@@ -42,17 +45,28 @@ def build_image_tree(path, base_dir, depth=0):
             # 只有当子目录内部含有图片时，才将其加入树中
             if sub_tree:
                 sub_tree["_depth"] = depth + 1
-                sub_tree["_full_path"] = os.path.relpath(full_path, base_dir).replace(
-                    "\\", "/"
-                )
-                sub_tree["_parent_path"] = os.path.dirname(sub_tree["_full_path"])
+                _full_path = os.path.relpath(full_path, base_dir).replace("\\", "/")
+                _parent_path = os.path.dirname(_full_path)
+                if not CONTAIN_ICONS_DIR:
+                    prefix = ICONS_DIR_NAME + "/"
+                    if _full_path.startswith(prefix):
+                        _full_path = _full_path[len(prefix) :]
+                    if _parent_path.startswith(prefix):
+                        _parent_path = _parent_path[len(prefix) :]
+                sub_tree["_full_path"] = _full_path
+                sub_tree["_parent_path"] = _parent_path
                 tree[item] = sub_tree
 
         elif os.path.isfile(full_path):
             # 如果是文件，检查后缀
             if any(item.lower().endswith(ext) for ext in IMAGE_EXTS):
                 # 计算相对路径，统一使用 / 分隔符并存入字典
-                tree[item] = os.path.relpath(full_path, base_dir).replace("\\", "/")
+                _path = os.path.relpath(full_path, base_dir).replace("\\", "/")
+                if not CONTAIN_ICONS_DIR:
+                    prefix = ICONS_DIR_NAME + "/"
+                    if _path.startswith(prefix):
+                        _path = _path[len(prefix) :]
+                tree[item] = _path
 
     return tree
 
