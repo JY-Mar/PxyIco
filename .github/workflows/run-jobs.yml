@@ -1,0 +1,64 @@
+name: Generate Resources
+
+on:
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: "强制更新配置"
+        required: false
+        default: false
+        type: boolean
+
+  # main分支提交触发
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.png"
+      - "**/*.jpg"
+      - "**/*.jpeg"
+
+# 设置权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 确保只有一个部署任务同时运行
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  generate-resources:
+    runs-on: ubuntu-latest
+    environment: github-pages
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🗃️ Create output directory and copy something
+        run: |
+          mkdir -p docs
+          cp -r resources/* docs/
+
+      - name: 📤 Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: generate-resources
+
+    steps:
+      - name: ⬆️ Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
