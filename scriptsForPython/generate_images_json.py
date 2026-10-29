@@ -4,6 +4,9 @@ import json
 # 图标目录名
 ICONS_DIR_NAME = "resources"
 
+# 发布的 docs 是否包含 ICONS_DIR_NAME 目录
+CONTAIN_ICONS_DIR = True
+
 # 输出JSON文件名
 OUTPUT_JSON = "images.json"
 
@@ -11,9 +14,7 @@ OUTPUT_JSON = "images.json"
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 目标扫描目录：ICONS_DIR_NAME/
-icons_dir = os.path.join(
-    os.path.abspath(os.path.join(current_dir, "..")), ICONS_DIR_NAME
-)
+icons_dir = os.path.join(os.path.abspath(os.path.join(current_dir, "..")), ICONS_DIR_NAME)
 
 # 支持的图片扩展名
 IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"]
@@ -42,7 +43,9 @@ def build_image_tree(path, base_dir, depth=0):
             # 只有当子目录内部含有图片时，才将其加入树中
             if sub_tree:
                 sub_tree["_depth"] = depth + 1
-                sub_tree["_full_path"] = os.path.relpath(full_path, base_dir).replace("\\", "/")
+                sub_tree["_full_path"] = os.path.relpath(full_path, base_dir).replace(
+                    "\\", "/"
+                )
                 sub_tree["_parent_path"] = os.path.dirname(sub_tree["_full_path"])
                 tree[item] = sub_tree
 
@@ -53,6 +56,7 @@ def build_image_tree(path, base_dir, depth=0):
                 tree[item] = os.path.relpath(full_path, base_dir).replace("\\", "/")
 
     return tree
+
 
 def sort_json_data(data):
     """
@@ -68,7 +72,7 @@ def sort_json_data(data):
         def key_func(item):
             k, v = item
             # 1. 下划线开头 → 优先级最高 (0)
-            if k.startswith('_'):
+            if k.startswith("_"):
                 priority = 0
             # 2. 基本类型 → 优先级中等 (1)
             elif isinstance(v, (str, int, float, bool, type(None))):

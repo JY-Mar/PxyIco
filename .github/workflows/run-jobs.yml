@@ -44,7 +44,7 @@ jobs:
       - name: 🗃️ Create output directory and copy something
         run: |
           mkdir -p docs
-          cp -r resources/* docs/
+          cp -r resources/* docs/resources
       
       - name: 🧠 Run grouping script in resources/
         env:
