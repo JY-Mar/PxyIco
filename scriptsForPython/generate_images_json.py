@@ -4,9 +4,6 @@ import json
 # 图标目录名
 ICONS_DIR_NAME = "resources"
 
-# 发布的 docs 是否包含 ICONS_DIR_NAME 目录
-CONTAIN_ICONS_DIR = True
-
 # 输出JSON文件名
 OUTPUT_JSON = "images.json"
 
@@ -14,7 +11,9 @@ OUTPUT_JSON = "images.json"
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # 目标扫描目录：ICONS_DIR_NAME/
-icons_dir = os.path.join(os.path.abspath(os.path.join(current_dir, "..")), ICONS_DIR_NAME)
+icons_dir = os.path.join(
+    os.path.abspath(os.path.join(current_dir, "..")), ICONS_DIR_NAME
+)
 
 # 支持的图片扩展名
 IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"]
