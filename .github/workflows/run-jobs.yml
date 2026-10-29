@@ -18,6 +18,8 @@ on:
       - "**/*.png"
       - "**/*.jpg"
       - "**/*.jpeg"
+      - "scriptsForPython/*.py"
+      - "templates/index.html"
 
 # 设置权限
 permissions:
