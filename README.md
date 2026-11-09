@@ -35,7 +35,7 @@ icons of proxy tools
 
 [https://github.com/luestr/ProxyResource/blob/main/Tool/Loon/Lcf/zh-CN/Loon_Sample_Configuration_By_iKeLee.lcf](https://github.com/luestr/ProxyResource/blob/main/Tool/Loon/Lcf/zh-CN/Loon_Sample_Configuration_By_iKeLee.lcf)
 
-## PxyRes 集成的图标
+## PxyIco 集成的图标
 
 > 来自
 > 1. [Koolson/Qure](https://github.com/Koolson/Qure)

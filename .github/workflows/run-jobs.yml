@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       force_update:
-        description: "强制更新配置"
+        description: "Force Update"
         required: false
         default: false
         type: boolean
@@ -19,7 +19,12 @@ on:
       - "**/*.jpg"
       - "**/*.jpeg"
       - "scriptsForPython/*.py"
-      - "templates/index.html"
+      - 'templates/*.yaml'
+      - 'templates/**/*.yaml'
+      - 'templates/*.html'
+      - 'templates/**/*.html'
+      - 'templates/*.css'
+      - 'templates/**/*.css'
 
 # 设置权限
 permissions:
@@ -46,7 +51,7 @@ jobs:
       - name: 🗃️ Create output directory and copy something
         run: |
           mkdir -p docs
-          cp -r resources/* docs/
+          cp -r resources/* docs
       
       - name: 🧠 Run grouping script in resources/
         env:
